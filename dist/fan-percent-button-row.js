@@ -116,11 +116,11 @@ class CustomFanPercentRow extends Polymer.Element {
 			customSetpoints: false,
 			reverseButtons: false,
 			isTwoSpeedFan: false,
-			button1Percentage: 0,
-			button2Percentage: 1,
+			button1Percentage: 100,
+			button2Percentage: 66,
 			button3Percentage: 33,
-			button4Percentage: 66,
-			button5Percentage: 100,
+			button4Percentage: 1,
+			button5Percentage: 0,
 			width: '30px',
 			height: '30px',
 			isOffColor: '#f44c09',
@@ -174,20 +174,20 @@ class CustomFanPercentRow extends Polymer.Element {
 		let low;
 		let med;
 		let high;
-		let offstate;
+		let offState;
 		
 		if (custSetpoint) {
 			button1Setpoint = parseInt(button1Setpoint);
 			button3Setpoint = parseInt(button3Setpoint);
-			if (parseInt(button2Setpoint) < 1) {
-				button2Setpoint = 1;
+			if (parseInt(button4Setpoint) < 1) {
+				button4Setpoint = 1;
 			} else {
-				button2Setpoint =  parseInt(button2Setpoint);
+				button4Setpoint =  parseInt(button4Setpoint);
 			}
-			if (parseInt(button5Setpoint) > 100) {	
-				button5Setpoint = 100;
+			if (parseInt(button1Setpoint) > 100) {	
+				button1Setpoint = 100;
 			} else {
-				button5Setpoint = parseInt(button5Setpoint);
+				button1Setpoint = parseInt(button1Setpoint);
 			}
 			if (stateObj && stateObj.attributes) {
 				if (stateObj.state == 'on' && stateObj.attributes.percentage > button1Setpoint && stateObj.attributes.percentage <= ((button3Setpoint + button2Setpoint)/2) ) {
@@ -199,7 +199,7 @@ class CustomFanPercentRow extends Polymer.Element {
 				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((button5Setpoint + button4Setpoint)/2) && stateObj.attributes.percentage <= 100) {
 					high = 'on';
 				} else {
-					offstate = 'on';
+					offState = 'on';
 				}	
 			}
 		} else {
@@ -218,7 +218,7 @@ class CustomFanPercentRow extends Polymer.Element {
 				} else if (stateObj.state == 'on' && stateObj.attributes.percentage >= 76 && stateObj.attributes.percentage <= 100) {
 					high = 'on';
 				} else {
-					offstate = 'on';
+					offState = 'on';
 				}
 			}
 		}
@@ -252,7 +252,7 @@ class CustomFanPercentRow extends Polymer.Element {
 			} else {
 				button4color = 'background-color:' + buttonOffClr;
 			}
-			if (offstate == 'on') {
+			if (offState == 'on') {
 				button5color = 'background-color:'  + onButton5Clr;
 			} else {
 				button5color = 'background-color:' + buttonOffClr;
@@ -278,7 +278,7 @@ class CustomFanPercentRow extends Polymer.Element {
 			} else {
 				button4color = 'background-color: var(--switch-unchecked-color)';
 			}
-			if (offstate == 'on') {
+			if (offState == 'on') {
 				button5color = 'background-color: var(--switch-checked-color)';
 			} else {
 				button5color = 'background-color: var(--switch-unchecked-color)';
@@ -294,37 +294,37 @@ class CustomFanPercentRow extends Polymer.Element {
 		let buttonwidth = buttonWidth;
 		let buttonheight = buttonHeight;
 		
-		let button1Name = 'brz'
-		let button2Name = 'low'
-		let button3Name = 'medium'
-		let button4Name = 'high'
+		let button1Name = 'high'
+		let button2Name = 'medium'
+		let button3Name = 'low'
+		let button4Name = 'breeze'
 		let button5Name = 'off'
 		
-		let hideButton1 = 'display:block';
-		let hideButton3 = 'display:block';
+		let hideButton2 = 'display:block';
+		let hideButton4 = 'display:block';
 		let nohide = 'display:block';
 		
 		if (twoSpdFan) {
-			hideButton1 = 'display:none';
-			hideButton3 = 'display:none';
+			hideButton2 = 'display:none';
+			hideButton4 = 'display:none';
 		} else {
-			hideButton1 = 'display:block';
-			hideButton3 = 'display:block';
+			hideButton2 = 'display:block';
+			hideButton4 = 'display:block';
 		}
 		if (threeSpdFan) {
-			hideButton1 = 'display:none';
+			hideButton4 = 'display:none';
 		} else {
-			hideButton1 = 'display:block';
+			hideButton4 = 'display:block';
 		}
 		
 		if (revButtons) {
 			this.setProperties({
 				_stateObj: stateObj,
-				_button1State: offstate == 'on',
-				_button2State: brz === 'on',
+				_button1State: high == 'on',
+				_button2State: med === 'on',
 				_button3State: low === 'on',
-				_button4State: med === 'on',
-				_button5State: high === 'on',
+				_button4State: brz === 'on',
+				_button5State: offState === 'on',
 				_width: buttonwidth,
 				_height: buttonheight,
 				_button1Color: button1color,
@@ -347,8 +347,8 @@ class CustomFanPercentRow extends Polymer.Element {
 				_button3Name: button3Name,
 				_button4Name: button4Name,
 				_button5Name: button5Name,
-				_hidebutton1: hideButton1,
-				_hidebutton3: hideButton3,
+				_hidebutton1: hideButton2,
+				_hidebutton3: hideButton4,
 			});
 		} else {
 			this.setProperties({
@@ -357,7 +357,7 @@ class CustomFanPercentRow extends Polymer.Element {
 				_button2State: med === 'on',
 				_button3State: low === 'on',
 				_button4State: brz === 'on',
-				_button5State: offstate === 'on',
+				_button5State: offState === 'on',
 				_width: buttonwidth,
 				_height: buttonheight,
 				_button1Color: button1color,
@@ -380,8 +380,8 @@ class CustomFanPercentRow extends Polymer.Element {
 				_button3Name: button3Name,
 				_button4Name: button4Name,
 				_button5Name: button5Name,
-				_hidebutton1: hideButton1,
-				_hidebutton3: hideButton3,
+				_hidebutton1: hideButton2,
+				_hidebutton3: hideButton4,
 			});
 		}
 	}
