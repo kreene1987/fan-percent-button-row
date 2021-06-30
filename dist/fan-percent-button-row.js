@@ -34,28 +34,34 @@ class CustomFanPercentRow extends Polymer.Element {
 						<div class='horizontal justified layout' on-click="stopPropagation">
 							<button
 								class='percentage'
-								style='[[_leftColor]];min-width:[[_width]];max-width:[[_width]];height:[[_height]]'
-								toggles name="[[_leftName]]"
+								style='[[_button1Color]];min-width:[[_width]];max-width:[[_width]];height:[[_height]]'
+								toggles name="[[_button1Name]]"
 								on-click='setPercentage'
-								disabled='[[_leftState]]'>[[_leftText]]</button>
+								disabled='[[_button1State]]'>[[_button1Text]]</button>
 							<button
 								class='percentage'
-								style='[[_midLeftColor]];min-width:[[_width]];max-width:[[_width]];height:[[_height]];[[_hideMidLeft]]'
-								toggles name="[[_midLeftName]]"
+								style='[[_button2Color]];min-width:[[_width]];max-width:[[_width]];height:[[_height]];[[_hideButton2]]'
+								toggles name="[[_button2Name]]"
 								on-click='setPercentage'
-								disabled='[[_midLeftState]]'>[[_midLeftText]]</button>
+								disabled='[[_button2State]]'>[[_button2Text]]</button>
 							<button
 								class='percentage'
-								style='[[_midRightColor]];min-width:[[_width]];max-width:[[_width]];height:[[_height]];[[_hideMidRight]]'
-								toggles name="[[_midRightName]]"
+								style='[[_button3Color]];min-width:[[_width]];max-width:[[_width]];height:[[_height]];[[_hideButton3]]'
+								toggles name="[[_button3Name]]"
 								on-click='setPercentage'
-								disabled='[[_midRightState]]'>[[_midRightText]]</button>
+								disabled='[[_button3State]]'>[[_button3Text]]</button>
 							<button
 								class='percentage'
-								style='[[_rightColor]];min-width:[[_width]];max-width:[[_width]];height:[[_height]]'
-								toggles name="[[_rightName]]"
+								style='[[_button4Color]];min-width:[[_width]];max-width:[[_width]];height:[[_height]];[[_hideButton4]]'
+								toggles name="[[_button4Name]]"
 								on-click='setPercentage'
-								disabled='[[_rightState]]'>[[_rightText]]</button>
+								disabled='[[_button4State]]'>[[_button4Text]]</button>
+							<button
+								class='percentage'
+								style='[[_button5Color]];min-width:[[_width]];max-width:[[_width]];height:[[_height]]'
+								toggles name="[[_button5Name]]"
+								on-click='setPercentage'
+								disabled='[[_button5State]]'>[[_button5Text]]</button>
 						</div>
 					</hui-generic-entity-row>
 		`;
@@ -69,30 +75,35 @@ class CustomFanPercentRow extends Polymer.Element {
 			},
 				_config: Object,
 				_stateObj: Object,
-				_offSP: Number,
-				_lowSP: Number,
-				_medSP: Number,
-				_highSP: Number,
+				_button1SP: Number,
+				_button2SP: Number,
+				_button3SP: Number,
+				_button4SP: Number,
+				_button5SP: Number,
 				_width: String,
 				_height: String,
-				_leftColor: String,
-				_midLeftColor: String,
-				_midRightColor: String,
-				_rightColor: String,
-				_leftText: String,
-				_midLeftText: String,
-				_midRightText: String,
-				_rightText: String,
-				_leftName: String,
-				_midLeftName: String,
-				_midRightName: String,
-				_rightName: String,
-				_hideMidLeft: String,
-				_hideMidRight: String,
-				_leftState: Boolean,
-				_midLeftState: Boolean,
-				_midRightState: Boolean,
-				_rightState: Boolean,
+				_button1Color: String,
+				_button2Color: String,
+				_button3Color: String,
+				_button4Color: String,
+				_button5Color: String,
+				_button1Text: String,
+				_button2Text: String,
+				_button3Text: String,
+				_button4Text: String,
+				_button5Text: String,
+				_button1Name: String,
+				_button2Name: String,
+				_button3Name: String,
+				_button4Name: String,
+				_hideButton2: String,
+				_hideButton3: String,
+				_hideButton4: String,
+				_button1State: Boolean,
+				_button2State: Boolean,
+				_button3State: Boolean,
+				_button4State: Boolean,
+				_button5State: Boolean,
 				
 		}
 	}
@@ -105,10 +116,11 @@ class CustomFanPercentRow extends Polymer.Element {
 			customSetpoints: false,
 			reverseButtons: false,
 			isTwoSpeedFan: false,
-			offPercentage: 0,
-			lowPercentage: 33,
-			medPercentage: 66,
-			hiPercentage: 100,
+			button1Percentage: 0,
+			button2Percentage: 1,
+			button3Percentage: 33,
+			button4Percentage: 66,
+			button5Percentage: 100,
 			width: '30px',
 			height: '30px',
 			isOffColor: '#f44c09',
@@ -116,10 +128,11 @@ class CustomFanPercentRow extends Polymer.Element {
 			isOnMedColor: '#43A047',
 			isOnHiColor: '#43A047',
 			buttonInactiveColor: '#759aaa',
-			customOffText: 'OFF',
-			customLowText: 'LOW',
-			customMedText: 'MED',
-			customHiText: 'HIGH',
+			custombutton1Text: 'OFF',
+			custombutton2Text: 'BRZ',
+			custombutton3Text: 'LOW',
+			custombutton4Text: 'MED',
+			custombutton5Text: 'HIGH',
 			...config
 		};
 	}
@@ -132,62 +145,73 @@ class CustomFanPercentRow extends Polymer.Element {
 		const custSetpoint = config.customSetpoints;
 		const revButtons = config.reverseButtons;
 		const twoSpdFan = config.isTwoSpeedFan;
+		const threeSpdFan = config.isThreeSpeedFan;
 		const buttonWidth = config.width;
 		const buttonHeight = config.height;
-		const OnLowClr = config.isOnLowColor;
-		const OnMedClr = config.isOnMedColor;
-		const OnHiClr = config.isOnHiColor;
-		const OffClr = config.isOffColor;
+		const onButton1Clr = config.isOnButton1Color;
+		const onButton2Clr = config.isOnButton2Color;
+		const onButton3Clr = config.isOnButton3Color;
+		const onButton4Clr = config.isOnButton4Color;
+		const onButton5Clr = config.isOnButton5Color;
 		const buttonOffClr = config.buttonInactiveColor;
-		const OffSetpoint = config.offPercentage;
-		const LowSetpoint = config.lowPercentage;
-		const MedSetpoint = config.medPercentage;
-		const HiSetpoint = config.hiPercentage;
-		const custOffTxt = config.customOffText;
-		const custLowTxt = config.customLowText;
-		const custMedTxt = config.customMedText;
-		const custHiTxt = config.customHiText;
+		const button1Setpoint = config.button1Percentage;
+		const button2Setpoint = config.button2Percentage;
+		const button3Setpoint = config.button3Percentage;
+		const button4Setpoint = config.button4Percentage;
+		const offSetpoint = config.button5Percentage;
+		const custButton1Txt = config.customButton1Text;
+		const custButton2Txt = config.customButton2Text;
+		const custButton3Txt = config.customButton3Text;
+		const custButton4Txt = config.customButton4Text;
+		const custButton5Txt = config.customButton5Text;
 						
-		let offSetpoint;
-		let lowSetpoint;
-		let medSetpoint;
-		let hiSetpoint;
+		let button1Setpoint;
+		let button2Setpoint;
+		let button3Setpoint;
+		let button4Setpoint;
+		let button5Setpoint;
+		let brz;
 		let low;
 		let med;
 		let high;
 		let offstate;
 		
 		if (custSetpoint) {
-			offSetpoint = parseInt(OffSetpoint);
-			medSetpoint = parseInt(MedSetpoint);
-			if (parseInt(LowSetpoint) < 1) {
-				lowSetpoint = 1;
+			button1Setpoint = parseInt(button1Setpoint);
+			button3Setpoint = parseInt(button3Setpoint);
+			if (parseInt(button2Setpoint) < 1) {
+				button2Setpoint = 1;
 			} else {
-				lowSetpoint =  parseInt(LowSetpoint);
+				button2Setpoint =  parseInt(button2Setpoint);
 			}
-			if (parseInt(HiSetpoint) > 100) {	
-				hiSetpoint = 100;
+			if (parseInt(button5Setpoint) > 100) {	
+				button5Setpoint = 100;
 			} else {
-				hiSetpoint = parseInt(HiSetpoint);
+				button5Setpoint = parseInt(button5Setpoint);
 			}
 			if (stateObj && stateObj.attributes) {
-				if (stateObj.state == 'on' && stateObj.attributes.percentage > offSetpoint && stateObj.attributes.percentage <= ((medSetpoint + lowSetpoint)/2) ) {
+				if (stateObj.state == 'on' && stateObj.attributes.percentage > button1Setpoint && stateObj.attributes.percentage <= ((button3Setpoint + button2Setpoint)/2) ) {
+					brz = 'on';
+				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((button3Setpoint + button2Setpoint)/2) && stateObj.attributes.percentage <= ((button4Setpoint + button3Setpoint)/2) ) {
 					low = 'on';
-				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((medSetpoint + lowSetpoint)/2) && stateObj.attributes.percentage <= ((hiSetpoint + medSetpoint)/2) ) {
+				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((button4Setpoint + button3Setpoint)/2) && stateObj.attributes.percentage <= ((button5Setpoint + button4Setpoint)/2) ) {
 					med = 'on';
-				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((hiSetpoint + medSetpoint)/2) && stateObj.attributes.percentage <= 100) {
+				} else if (stateObj.state == 'on' && stateObj.attributes.percentage > ((button5Setpoint + button4Setpoint)/2) && stateObj.attributes.percentage <= 100) {
 					high = 'on';
 				} else {
 					offstate = 'on';
 				}	
 			}
 		} else {
-			offSetpoint = parseInt(OffSetpoint);
-			lowSetpoint =  parseInt(LowSetpoint);
-			medSetpoint = parseInt(MedSetpoint);
-			hiSetpoint = parseInt(HiSetpoint);
+			button1Setpoint = parseInt(button1Setpoint);
+			button2Setpoint = parseInt(button2Setpoint);
+			button3Setpoint = parseInt(button3Setpoint);
+			button4Setpoint = parseInt(button4Setpoint);
+			button5Setpoint = parseInt(button5Setpoint);
 			if (stateObj && stateObj.attributes) {
-				if (stateObj.state == 'on' && stateObj.attributes.percentage >= 17 && stateObj.attributes.percentage <= 50) {
+				if (stateObj.state == 'on' && stateObj.attributes.percentage >= 0 && stateObj.attributes.percentage <= 1) {
+					brz = 'on';
+				} else if (stateObj.state == 'on' && stateObj.attributes.percentage >= 2 && stateObj.attributes.percentage <= 50) {
 					low = 'on';
 				} else if (stateObj.state == 'on' && stateObj.attributes.percentage >= 51 && stateObj.attributes.percentage <= 75) {
 					med = 'on';
@@ -199,133 +223,165 @@ class CustomFanPercentRow extends Polymer.Element {
 			}
 		}
 		
-		let lowcolor;
-		let medcolor;
-		let hicolor;
-		let offcolor;
+		let button1color;
+		let button2color;
+		let button3color;
+		let button4color;
+		let button5color;
+		let buttonOffClr
 
 				
 		if (custTheme) {
-			if (low == 'on') {
-				lowcolor = 'background-color:' + OnLowClr;
+			if (brz == 'on') {
+				button1color = 'background-color:' + onButton1Clr;
 			} else {
-				lowcolor = 'background-color:' + buttonOffClr;
+				button1color = 'background-color:' + buttonOffClr;
+			}
+			if (low == 'on') {
+				button2color = 'background-color:' + onButton2Clr;
+			} else {
+				button2color = 'background-color:' + buttonOffClr;
 			}
 			if (med == 'on') {
-				medcolor = 'background-color:'  + OnMedClr;
+				button3color = 'background-color:'  + onButton3Clr;
 			} else {
-				medcolor = 'background-color:' + buttonOffClr;
+				button3color = 'background-color:' + buttonOffClr;
 			}
 			if (high == 'on') {
-				hicolor = 'background-color:'  + OnHiClr;
+				button4color = 'background-color:'  + onButton4Clr;
 			} else {
-				hicolor = 'background-color:' + buttonOffClr;
+				button4color = 'background-color:' + buttonOffClr;
 			}
 			if (offstate == 'on') {
-				offcolor = 'background-color:'  + OffClr;
+				button5color = 'background-color:'  + onButton5Clr;
 			} else {
-				offcolor = 'background-color:' + buttonOffClr;
+				button5color = 'background-color:' + buttonOffClr;
 			}
 		} else {
-			if (low == 'on') {
-				lowcolor = 'background-color: var(--switch-checked-color)';
+			if (brz == 'on') {
+				button1color = 'background-color: var(--switch-checked-color)';
 			} else {
-				lowcolor = 'background-color: var(--switch-unchecked-color)';
+				button1color = 'background-color: var(--switch-unchecked-color)';
+			}
+			if (low == 'on') {
+				button2color = 'background-color: var(--switch-checked-color)';
+			} else {
+				button2color = 'background-color: var(--switch-unchecked-color)';
 			}
 			if (med == 'on') {
-				medcolor = 'background-color: var(--switch-checked-color)';
+				button3color = 'background-color: var(--switch-checked-color)';
 			} else {
-				medcolor = 'background-color: var(--switch-unchecked-color)';
+				button3color = 'background-color: var(--switch-unchecked-color)';
 			}
 			if (high == 'on') {
-				hicolor = 'background-color: var(--switch-checked-color)';
+				button4color = 'background-color: var(--switch-checked-color)';
 			} else {
-				hicolor = 'background-color: var(--switch-unchecked-color)';
+				button4color = 'background-color: var(--switch-unchecked-color)';
 			}
 			if (offstate == 'on') {
-				offcolor = 'background-color: var(--switch-checked-color)';
+				button5color = 'background-color: var(--switch-checked-color)';
 			} else {
-				offcolor = 'background-color: var(--switch-unchecked-color)';
+				button5color = 'background-color: var(--switch-unchecked-color)';
 			}
 		}
 
-		let offtext = custOffTxt;
-		let lowtext = custLowTxt;
-		let medtext = custMedTxt;
-		let hitext = custHiTxt;
+		let button1Text = custButton1Txt;
+		let button2Text = custButton2Txt;
+		let button3Text = custButton3Txt;
+		let button4Text = custButton4Txt;
+		let button5Text = custButton5Txt;
 		
 		let buttonwidth = buttonWidth;
 		let buttonheight = buttonHeight;
 		
-		let offname = 'off'
-		let lowname = 'low'
-		let medname = 'medium'
-		let hiname = 'high'
+		let button1Name = 'brz'
+		let button2Name = 'low'
+		let button3Name = 'medium'
+		let button4Name = 'high'
+		let button5Name = 'off'
 		
-		let hidemedium = 'display:block';
+		let hideButton1 = 'display:block';
+		let hideButton3 = 'display:block';
 		let nohide = 'display:block';
 		
 		if (twoSpdFan) {
-			hidemedium = 'display:none';
+			hideButton1 = 'display:none';
+			hideButton3 = 'display:none';
 		} else {
-			hidemedium = 'display:block';
+			hideButton1 = 'display:block';
+			hideButton3 = 'display:block';
+		}
+		if (threeSpdFan) {
+			hideButton1 = 'display:none';
+		} else {
+			hideButton1 = 'display:block';
 		}
 		
 		if (revButtons) {
 			this.setProperties({
 				_stateObj: stateObj,
-				_leftState: offstate == 'on',
-				_midLeftState: low === 'on',
-				_midRightState: med === 'on',
-				_rightState: high === 'on',
+				_button1State: offstate == 'on',
+				_button2State: brz === 'on',
+				_button3State: low === 'on',
+				_button4State: med === 'on',
+				_button5State: high === 'on',
 				_width: buttonwidth,
 				_height: buttonheight,
-				_leftColor: offcolor,
-				_midLeftColor: lowcolor,
-				_midRightColor: medcolor,
-				_rightColor: hicolor,
-				_offSP: offSetpoint,
-				_lowSP: lowSetpoint,
-				_medSP: medSetpoint,
-				_highSP: hiSetpoint,
-				_leftText: offtext,
-				_midLeftText: lowtext,
-				_midRightText: medtext,
-				_rightText: hitext,
-				_leftName: offname,
-				_midLeftName: lowname,
-				_midRightName: medname,
-				_rightName: hiname,
-				_hideMidLeft: nohide,
-				_hideMidRight: hidemedium,
+				_button1Color: button1color,
+				_button2Color: button2color,
+				_button3Color: button3color,
+				_button4Color: button4color,
+				_button5Color: button5color,
+				_button1SP: button1Setpoint,
+				_button2SP: button2Setpoint,
+				_button3SP: button3Setpoint,
+				_button4SP: button4Setpoint,
+				_button5SP: button5Setpoint,
+				_button1Text: button1Text,
+				_button2Text: button2Text,
+				_button3Text: button3Text,
+				_button4Text: button4Text,
+				_button5Text: button5Text,
+				_button1Name: button1Name,
+				_button2Name: button2Name,
+				_button3Name: button3Name,
+				_button4Name: button4Name,
+				_button5Name: button5Name,
+				_hidebutton1: hideButton1,
+				_hidebutton3: hideButton3,
 			});
 		} else {
 			this.setProperties({
 				_stateObj: stateObj,
-				_leftState: high == 'on',
-				_midLeftState: med === 'on',
-				_midRightState: low === 'on',
-				_rightState: offstate === 'on',
+				_button1State: high == 'on',
+				_button2State: med === 'on',
+				_button3State: low === 'on',
+				_button4State: brz === 'on',
+				_button5State: offstate === 'on',
 				_width: buttonwidth,
 				_height: buttonheight,
-				_leftColor: hicolor,
-				_midLeftColor: medcolor,
-				_midRightColor: lowcolor,
-				_rightColor: offcolor,
-				_offSP: offSetpoint,
-				_lowSP: lowSetpoint,
-				_medSP: medSetpoint,
-				_highSP: hiSetpoint,
-				_leftText: hitext,
-				_midLeftText: medtext,
-				_midRightText: lowtext,
-				_rightText: offtext,
-				_leftName: hiname,
-				_midLeftName: medname,
-				_midRightName: lowname,
-				_rightName: offname,
-				_hideMidRight: nohide,
-				_hideMidLeft: hidemedium,
+				_button1Color: button1color,
+				_button2Color: button2color,
+				_button3Color: button3color,
+				_button4Color: button4color,
+				_button5Color: button5color,
+				_button1SP: button1Setpoint,
+				_button2SP: button2Setpoint,
+				_button3SP: button3Setpoint,
+				_button4SP: button4Setpoint,
+				_button5SP: button5Setpoint,
+				_button1Text: button1Text,
+				_button2Text: button2Text,
+				_button3Text: button3Text,
+				_button4Text: button4Text,
+				_button5Text: button5Text,
+				_button1Name: button1Name,
+				_button2Name: button2Name,
+				_button3Name: button3Name,
+				_button4Name: button4Name,
+				_button5Name: button5Name,
+				_hidebutton1: hideButton1,
+				_hidebutton3: hideButton3,
 			});
 		}
 	}
@@ -340,6 +396,9 @@ class CustomFanPercentRow extends Polymer.Element {
 		if( level == 'off' ){
 			this.hass.callService('fan', 'turn_off', param);
 			param.percentage = this._offSP;
+			this.hass.callService('fan', 'set_percentage', param);
+		} else if (level == 'brz') {
+			param.percentage = this._lowSP;
 			this.hass.callService('fan', 'set_percentage', param);
 		} else if (level == 'low') {
 			param.percentage = this._lowSP;
