@@ -158,7 +158,7 @@ class CustomFanPercentRow extends Polymer.Element {
 		const button2Setpoint = config.button2Percentage;
 		const button3Setpoint = config.button3Percentage;
 		const button4Setpoint = config.button4Percentage;
-		const offSetpoint = config.button5Percentage;
+		const button5Setpoint = config.button5Percentage;
 		const custButton1Txt = config.customButton1Text;
 		const custButton2Txt = config.customButton2Text;
 		const custButton3Txt = config.customButton3Text;
@@ -228,7 +228,7 @@ class CustomFanPercentRow extends Polymer.Element {
 		let button3color;
 		let button4color;
 		let button5color;
-		let buttonOffClr
+		let buttonOffClr;
 
 				
 		if (custTheme) {
